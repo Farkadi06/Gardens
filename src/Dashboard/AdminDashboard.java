@@ -160,7 +160,36 @@ public class AdminDashboard {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setBounds(190, 11, 104, 38);
 		panel_1.add(btnUpdate);
-		
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					String mySqlQuerry = "UPDATE `assignments` SET `Zone`=? ,`Plant`=? ,`Watering`=? ,`Fertlizing`=? WHERE Gardner =? ;";
+					
+					myConn = MySqlConnection.getConnection();
+					preparedStatement = myConn.prepareStatement(mySqlQuerry);
+					
+					preparedStatement.setString(1, ZoneNameComboBox.getSelectedItem().toString());
+					preparedStatement.setString(2, PlantName.getText());
+					preparedStatement.setString(3, NbrWatering.getValue().toString());
+					preparedStatement.setString(4, NbrFertlizing.getValue().toString());
+					preparedStatement.setString(5, GardnerName.getText());
+					
+					
+					preparedStatement.executeUpdate();
+
+					JOptionPane.showMessageDialog(null, "Updated Succesfully!");
+					
+				}catch(Exception exception) {
+					JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+					
+				}
+				
+				
+			}
+		});
+
 		JButton btnDelete = new JButton("Delete");
 		
 		btnDelete.setBounds(10, 56, 89, 38);
