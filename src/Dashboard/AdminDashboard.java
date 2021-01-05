@@ -124,7 +124,36 @@ public class AdminDashboard {
 		panel_1.setLayout(null);
 		
 		JButton btnAdd = new JButton("Insert");
-		
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					String mySqlQuerry = "INSERT INTO `assignments"
+							+ "`(`Gardner`, `Zone`, `Plant`, `Watering`, `Fertlizing`)"
+							+ " VALUES (?,?,?,?,?);";
+					myConn = MySqlConnection.getConnection();
+					
+					preparedStatement = myConn.prepareStatement(mySqlQuerry);
+					preparedStatement.setString(1, GardnerName.getText());
+					preparedStatement.setString(2, ZoneNameComboBox.getSelectedItem().toString());
+					preparedStatement.setString(3, PlantName.getText());
+					preparedStatement.setString(4, NbrWatering.getValue().toString());
+					preparedStatement.setString(5, NbrFertlizing.getValue().toString());
+					
+					preparedStatement.executeUpdate();
+
+					JOptionPane.showMessageDialog(null, "Inserted Succesfully!");
+					
+				}catch(Exception exception) {
+					JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+					
+				}
+				
+			}
+		});
+
+
 		btnAdd.setBounds(10, 11, 89, 38);
 		panel_1.add(btnAdd);
 		
