@@ -221,6 +221,28 @@ public class AdminDashboard {
 		panel_1.add(btnDelete);
 		
 		JButton btnShow = new JButton("Show");
+		btnShow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					String mySqlQuerry = "SELECT * FROM `assignments`;";
+					
+					myConn = MySqlConnection.getConnection();
+					preparedStatement = myConn.prepareStatement(mySqlQuerry);					
+					resultSet = preparedStatement.executeQuery();
+
+					table.setModel(DbUtils.resultSetToTableModel(resultSet));
+					
+					JOptionPane.showMessageDialog(null, "Deleted Succesfully!");
+					
+				}catch(Exception exception) {
+					JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+					
+				}
+				
+			}
+		});
+
 		
 		btnShow.setBounds(190, 56, 104, 38);
 		panel_1.add(btnShow);
