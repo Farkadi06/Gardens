@@ -191,6 +191,31 @@ public class AdminDashboard {
 		});
 
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					String mySqlQuerry = "DELETE FROM `assignments` WHERE Gardner =?  ;";
+					
+					myConn = MySqlConnection.getConnection();
+					preparedStatement = myConn.prepareStatement(mySqlQuerry);
+					
+					
+					preparedStatement.setString(1, GardnerName.getText());
+					
+					
+					preparedStatement.executeUpdate();
+
+					JOptionPane.showMessageDialog(null, "Deleted Succesfully!");
+					
+				}catch(Exception exception) {
+					JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+					
+				}
+				
+			}
+		});
+
 		
 		btnDelete.setBounds(10, 56, 89, 38);
 		panel_1.add(btnDelete);
