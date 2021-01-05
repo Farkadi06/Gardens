@@ -232,8 +232,6 @@ public class AdminDashboard {
 
 					table.setModel(DbUtils.resultSetToTableModel(resultSet));
 					
-					JOptionPane.showMessageDialog(null, "Deleted Succesfully!");
-					
 				}catch(Exception exception) {
 					JOptionPane.showMessageDialog(null,"Error: "+ exception);
 
