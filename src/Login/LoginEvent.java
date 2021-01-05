@@ -142,22 +142,28 @@ public class LoginEvent {
 				}
 			}
 		});
-		LoginBtn.setAction(action);
+		
 		
 		JButton CloseBtn = new JButton("Close");
+		CloseBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+			}
+		});
+		
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(LoginBtn, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
+					.addComponent(LoginBtn, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
 					.addGap(18)
 					.addComponent(CloseBtn, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+			gl_panel_2.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
 						.addComponent(CloseBtn, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
