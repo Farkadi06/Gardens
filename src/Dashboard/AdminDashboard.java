@@ -11,6 +11,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import Login.LoginEvent;
 import Login.LoginSession;
@@ -34,6 +35,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JSplitPane;
+import javax.swing.border.CompoundBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class AdminDashboard {
 
@@ -256,9 +259,13 @@ public class AdminDashboard {
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 723, 244);
+		panel_2.add(scrollPane);
+		
 		table = new JTable();
-		table.setBounds(10, 11, 723, 244);
-		panel_2.add(table);
+		table.setBorder(new CompoundBorder());
+		scrollPane.setViewportView(table);
 		
 		
 	}

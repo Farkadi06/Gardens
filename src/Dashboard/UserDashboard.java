@@ -16,6 +16,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTabbedPane;
 
 public class UserDashboard {
 	private JLabel UsernameUsr = new JLabel(".....");
@@ -46,6 +47,18 @@ public class UserDashboard {
 		
 		UsernameUsr.setText(LoginSession.Nickname);
 		Usr.setText(LoginSession.Usertype);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 92, 743, 433);
+		frame.getContentPane().add(tabbedPane);
+		
+		JPanel panelTasks = new JPanel();
+		tabbedPane.addTab("Tasks", null, panelTasks, null);
+		panelTasks.setLayout(null);
+		
+		JPanel panelInstructions = new JPanel();
+		tabbedPane.addTab("Instruction", null, panelInstructions, null);
+		panelInstructions.setLayout(null);
 	}
 
 	/**
@@ -99,5 +112,4 @@ public class UserDashboard {
 		LogoutUsr.setBounds(701, 23, 32, 27);
 		panel.add(LogoutUsr);
 	}
-
 }
