@@ -9,18 +9,21 @@ import javax.swing.JOptionPane;
 
 public class Operations {
 
-	public static boolean isLogin(String username, String password,String usertype) {
+	private static Connection myConn;
+	private static PreparedStatement preparedStatement;
+
+	public static boolean showTasks(String username, String password,String usertype) {
 		try {
-			Connection myConn = MySqlConnection.getConnection();
-			String mySqlQuery = "SELECT UID, Usertype,Nickname FROM login WHERE Username = '"+username+"' AND Password = '"+password+"' AND Usertype = '"+usertype+"';";
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT UID, Usertype,Username FROM login WHERE Username = '"+username+"' AND Password = '"+password+"' AND Usertype = '"+usertype+"';";
 					
-			PreparedStatement preparedStatement = myConn.prepareStatement(mySqlQuery);
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			
 			while(resultSet.next()) {
 				LoginSession.UID = resultSet.getInt("UID");
 				LoginSession.Usertype =resultSet.getString("Usertype");
-				LoginSession.Nickname = resultSet.getString("Nickname");
+				LoginSession.Nickname = resultSet.getString("Username");
 				
 				return true;
 			}

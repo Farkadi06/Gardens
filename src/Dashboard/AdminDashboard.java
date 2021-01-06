@@ -37,6 +37,7 @@ import javax.swing.JTable;
 import javax.swing.JSplitPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JTabbedPane;
 
 public class AdminDashboard {
 
@@ -76,10 +77,27 @@ public class AdminDashboard {
 		adm.setText(LoginSession.Usertype);
 		usernameAdm.setText(LoginSession.Nickname);
 		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(192, 192, 192));
+		panel_2.setBounds(10, 470, 743, 266);
+		frame.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 723, 244);
+		panel_2.add(scrollPane);
+		
+		table = new JTable();
+		table.setBorder(new CompoundBorder());
+		scrollPane.setViewportView(table);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 103, 743, 358);
+		frame.getContentPane().add(tabbedPane);
+		
 		JPanel panel = new JPanel();
+		tabbedPane.addTab("New tab", null, panel, null);
 		panel.setBackground(new Color(220, 220, 220));
-		panel.setBounds(10, 104, 743, 357);
-		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("Gardner  :");
@@ -155,117 +173,103 @@ public class AdminDashboard {
 				
 			}
 		});
-
-
-		btnAdd.setBounds(10, 11, 89, 38);
-		panel_1.add(btnAdd);
 		
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.setBounds(190, 11, 104, 38);
-		panel_1.add(btnUpdate);
-		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		
+				btnAdd.setBounds(10, 11, 89, 38);
+				panel_1.add(btnAdd);
 				
-				try {
-					String mySqlQuerry = "UPDATE `assignments` SET `Zone`=? ,`Plant`=? ,`Watering`=? ,`Fertlizing`=? WHERE Gardner =? ;";
-					
-					myConn = MySqlConnection.getConnection();
-					preparedStatement = myConn.prepareStatement(mySqlQuerry);
-					
-					preparedStatement.setString(1, ZoneNameComboBox.getSelectedItem().toString());
-					preparedStatement.setString(2, PlantName.getText());
-					preparedStatement.setString(3, NbrWatering.getValue().toString());
-					preparedStatement.setString(4, NbrFertlizing.getValue().toString());
-					preparedStatement.setString(5, GardnerName.getText());
-					
-					
-					preparedStatement.executeUpdate();
+				JButton btnUpdate = new JButton("Update");
+				btnUpdate.setBounds(190, 11, 104, 38);
+				panel_1.add(btnUpdate);
+				btnUpdate.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						
+						try {
+							String mySqlQuerry = "UPDATE `assignments` SET `Zone`=? ,`Plant`=? ,`Watering`=? ,`Fertlizing`=? WHERE Gardner =? ;";
+							
+							myConn = MySqlConnection.getConnection();
+							preparedStatement = myConn.prepareStatement(mySqlQuerry);
+							
+							preparedStatement.setString(1, ZoneNameComboBox.getSelectedItem().toString());
+							preparedStatement.setString(2, PlantName.getText());
+							preparedStatement.setString(3, NbrWatering.getValue().toString());
+							preparedStatement.setString(4, NbrFertlizing.getValue().toString());
+							preparedStatement.setString(5, GardnerName.getText());
+							
+							
+							preparedStatement.executeUpdate();
 
-					JOptionPane.showMessageDialog(null, "Updated Succesfully!");
-					
-				}catch(Exception exception) {
-					JOptionPane.showMessageDialog(null,"Error: "+ exception);
+							JOptionPane.showMessageDialog(null, "Updated Succesfully!");
+							
+						}catch(Exception exception) {
+							JOptionPane.showMessageDialog(null,"Error: "+ exception);
 
-					
-				}
+							
+						}
+						
+						
+					}
+				});
 				
-				
-			}
-		});
+						JButton btnDelete = new JButton("Delete");
+						btnDelete.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								try {
+									String mySqlQuerry = "DELETE FROM `assignments` WHERE Gardner =?  ;";
+									
+									myConn = MySqlConnection.getConnection();
+									preparedStatement = myConn.prepareStatement(mySqlQuerry);
+									
+									
+									preparedStatement.setString(1, GardnerName.getText());
+									
+									
+									preparedStatement.executeUpdate();
 
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					String mySqlQuerry = "DELETE FROM `assignments` WHERE Gardner =?  ;";
-					
-					myConn = MySqlConnection.getConnection();
-					preparedStatement = myConn.prepareStatement(mySqlQuerry);
-					
-					
-					preparedStatement.setString(1, GardnerName.getText());
-					
-					
-					preparedStatement.executeUpdate();
+									JOptionPane.showMessageDialog(null, "Deleted Succesfully!");
+									
+								}catch(Exception exception) {
+									JOptionPane.showMessageDialog(null,"Error: "+ exception);
 
-					JOptionPane.showMessageDialog(null, "Deleted Succesfully!");
-					
-				}catch(Exception exception) {
-					JOptionPane.showMessageDialog(null,"Error: "+ exception);
+									
+								}
+								
+							}
+						});
+						
+								
+								btnDelete.setBounds(10, 56, 89, 38);
+								panel_1.add(btnDelete);
+								
+								JButton btnShow = new JButton("Show");
+								btnShow.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										try {
+											String mySqlQuerry = "SELECT * FROM `assignments`;";
+											
+											myConn = MySqlConnection.getConnection();
+											preparedStatement = myConn.prepareStatement(mySqlQuerry);					
+											resultSet = preparedStatement.executeQuery();
 
-					
-				}
-				
-			}
-		});
+											table.setModel(DbUtils.resultSetToTableModel(resultSet));
+											
+										}catch(Exception exception) {
+											JOptionPane.showMessageDialog(null,"Error: "+ exception);
 
-		
-		btnDelete.setBounds(10, 56, 89, 38);
-		panel_1.add(btnDelete);
-		
-		JButton btnShow = new JButton("Show");
-		btnShow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					String mySqlQuerry = "SELECT * FROM `assignments`;";
-					
-					myConn = MySqlConnection.getConnection();
-					preparedStatement = myConn.prepareStatement(mySqlQuerry);					
-					resultSet = preparedStatement.executeQuery();
-
-					table.setModel(DbUtils.resultSetToTableModel(resultSet));
-					
-				}catch(Exception exception) {
-					JOptionPane.showMessageDialog(null,"Error: "+ exception);
-
-					
-				}
-				
-			}
-		});
-
-		
-		btnShow.setBounds(190, 56, 104, 38);
-		panel_1.add(btnShow);
-		
-		GardnerName = new JTextField();
-		GardnerName.setBounds(111, 44, 250, 20);
-		panel.add(GardnerName);
-		GardnerName.setColumns(10);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(192, 192, 192));
-		panel_2.setBounds(10, 470, 743, 266);
-		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 723, 244);
-		panel_2.add(scrollPane);
-		
-		table = new JTable();
-		table.setBorder(new CompoundBorder());
-		scrollPane.setViewportView(table);
+											
+										}
+										
+									}
+								});
+								
+										
+										btnShow.setBounds(190, 56, 104, 38);
+										panel_1.add(btnShow);
+										
+										GardnerName = new JTextField();
+										GardnerName.setBounds(111, 44, 250, 20);
+										panel.add(GardnerName);
+										GardnerName.setColumns(10);
 		
 		
 	}
@@ -298,13 +302,13 @@ public class AdminDashboard {
 	
 		usernameAdm.setForeground(new Color(0, 128, 0));
 		usernameAdm.setBackground(new Color(192, 192, 192));
-		usernameAdm.setBounds(161, 11, 46, 14);
+		usernameAdm.setBounds(161, 11, 99, 14);
 		panel.add(usernameAdm);
 		
 		
 		adm.setBackground(new Color(192, 192, 192));
 		adm.setForeground(Color.RED);
-		adm.setBounds(161, 36, 46, 14);
+		adm.setBounds(161, 36, 99, 14);
 		panel.add(adm);
 		
 		JLabel LogoutAdm = new JLabel("");

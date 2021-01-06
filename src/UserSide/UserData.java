@@ -3,36 +3,57 @@ package UserSide;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.*;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
-
-
+import Login.LoginSession;
 import Login.MySqlConnection;
+import net.proteanit.sql.DbUtils;
 
 public class UserData {
+	private static Connection myConn;
+	private static PreparedStatement preparedStatement;
+	private static ResultSet resultSet;
 	
-	public static boolean isDataAvailable(String username) {
+	public static void isDataAvailable(String username, JTable table) {
 		try {
-			Connection myConn = MySqlConnection.getConnection();
-			String mySqlQuery = "SELECT `Zone`, `Plant`, `Watering`, `Fertlizing` FROM `assignments` WHERE `Gardner` = '"+username+"';";
+			
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT  `AsignmentID` ,`Zone`, `Plant`, `Watering`, `Fertlizing` FROM `assignments` WHERE `Gardner` = '"+LoginSession.Nickname+"';";
 					
-			PreparedStatement preparedStatement = myConn.prepareStatement(mySqlQuery);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
+			table.setModel(DbUtils.resultSetToTableModel(resultSet));
+			
+			
+		}catch(Exception exception) {
+			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
+		}
+		
+	}
+	
+	
+	public static void comboBoxData( JComboBox<Integer> AsignmentsComboBox ) {
+		try {
+			
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT  `AsignmentID` ,`Zone`, `Plant`, `Watering`, `Fertlizing` FROM `assignments` WHERE `Gardner` = 'Mohammed';";
+					
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
 			
 			while(resultSet.next()) {
-				UserTasks.Zones.add(resultSet.getString("Zone"));
-				UserTasks.Plants.add(resultSet.getString("Plant"));
-				UserTasks.Watering.add(resultSet.getInt("Watering"));
-				UserTasks.Fertlizing.add(resultSet.getInt("Fertlizing"));
-				UserTasks.isDone.add(false);
-				return true;
+				AsignmentsComboBox.addItem(resultSet.getInt("AsignmentID"));
 			}
 			
 		}catch(Exception exception) {
 			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
 		}
-		return false;
 	}
 	
 }

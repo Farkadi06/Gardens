@@ -116,7 +116,7 @@ public class LoginEvent {
 					String passwordStr = PasswordText.getText();
 					String usertypeStr = UserTypeCombo.getSelectedItem().toString();
 					
-					if(Operations.isLogin(usernameStr,passwordStr,usertypeStr)) {
+					if(Operations.showTasks(usernameStr,passwordStr,usertypeStr)) {
 					
 						if (usertypeStr.equals("User"))
 							{
