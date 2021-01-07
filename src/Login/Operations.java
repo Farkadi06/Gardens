@@ -5,12 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 public class Operations {
 
 	private static Connection myConn;
 	private static PreparedStatement preparedStatement;
+	private static ResultSet resultSet;
 
 	public static boolean showTasks(String username, String password,String usertype) {
 		try {
@@ -18,7 +20,7 @@ public class Operations {
 			String mySqlQuery = "SELECT UID, Usertype,Username FROM login WHERE Username = '"+username+"' AND Password = '"+password+"' AND Usertype = '"+usertype+"';";
 					
 			preparedStatement = myConn.prepareStatement(mySqlQuery);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			
 			while(resultSet.next()) {
 				LoginSession.UID = resultSet.getInt("UID");
@@ -32,5 +34,24 @@ public class Operations {
 			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
 		}
 		return false;
+	}
+	
+	public static void comboBoxData( JComboBox<String> AsignmentsComboBox ) {
+		try {
+			
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT `Username` FROM `login` WHERE `Usertype` ='User';";
+					
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
+			
+			while(resultSet.next()) {
+				AsignmentsComboBox.addItem(resultSet.getString("Username"));
+			}
+			
+		}catch(Exception exception) {
+			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
+		}
 	}
 }

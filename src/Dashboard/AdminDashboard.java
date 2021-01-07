@@ -17,6 +17,7 @@ import Login.LoginEvent;
 import Login.LoginSession;
 import Login.Logout;
 import Login.MySqlConnection;
+import Login.Operations;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.JLabel;
@@ -65,6 +66,8 @@ public class AdminDashboard {
 	private JTextField textField;
 	private JTable tableGardners;
 	private JTable tablePlant;
+	private JComboBox<String> GardnerNameComboBox;
+	
 	
 	
 	
@@ -155,7 +158,7 @@ public class AdminDashboard {
 					myConn = MySqlConnection.getConnection();
 					
 					preparedStatement = myConn.prepareStatement(mySqlQuerry);
-					preparedStatement.setString(1, GardnerName.getText());
+					preparedStatement.setString(1, GardnerNameComboBox.getSelectedItem().toString());
 					preparedStatement.setString(2, ZoneNameComboBox.getSelectedItem().toString());
 					preparedStatement.setString(3, PlantName.getText());
 					preparedStatement.setString(4, NbrWatering.getValue().toString());
@@ -194,7 +197,7 @@ public class AdminDashboard {
 							preparedStatement.setString(2, PlantName.getText());
 							preparedStatement.setString(3, NbrWatering.getValue().toString());
 							preparedStatement.setString(4, NbrFertlizing.getValue().toString());
-							preparedStatement.setString(5, GardnerName.getText());
+							preparedStatement.setString(5, GardnerNameComboBox.getSelectedItem().toString());
 							
 							
 							preparedStatement.executeUpdate();
@@ -221,7 +224,7 @@ public class AdminDashboard {
 									preparedStatement = myConn.prepareStatement(mySqlQuerry);
 									
 									
-									preparedStatement.setString(1, GardnerName.getText());
+									preparedStatement.setString(1, GardnerNameComboBox.getSelectedItem().toString());
 									
 									
 									preparedStatement.executeUpdate();
@@ -252,6 +255,8 @@ public class AdminDashboard {
 											resultSet = preparedStatement.executeQuery();
 
 											table.setModel(DbUtils.resultSetToTableModel(resultSet));
+											Operations.comboBoxData(GardnerNameComboBox);
+
 											
 										}catch(Exception exception) {
 											JOptionPane.showMessageDialog(null,"Error: "+ exception);
@@ -284,6 +289,10 @@ public class AdminDashboard {
 										table = new JTable();
 										table.setBorder(new CompoundBorder());
 										scrollPane.setViewportView(table);
+										
+										GardnerNameComboBox = new JComboBox();
+										GardnerNameComboBox.setBounds(371, 28, 132, 22);
+										panel.add(GardnerNameComboBox);
 										
 										JPanel panel_3 =  new JPanel();
 										tabbedPane.addTab("New Gardners and Plants", null, panel_3, null);
