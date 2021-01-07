@@ -38,6 +38,14 @@ import javax.swing.JSplitPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.TitledBorder;
+import java.awt.Font;
+import javax.swing.border.EtchedBorder;
+import javax.swing.JFormattedTextField;
+import com.toedter.components.JLocaleChooser;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.components.JSpinField;
+import com.toedter.calendar.JCalendar;
 
 public class AdminDashboard {
 
@@ -51,6 +59,11 @@ public class AdminDashboard {
 	PreparedStatement preparedStatement = null;
 	ResultSet resultSet = null;
 	private JTable table;
+	private JTextField NewUsername;
+	private JTextField NewPassword;
+	private JTextField textField;
+	private JTable table_1;
+	private JTable table_2;
 	
 	
 	
@@ -77,26 +90,12 @@ public class AdminDashboard {
 		adm.setText(LoginSession.Usertype);
 		usernameAdm.setText(LoginSession.Nickname);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(192, 192, 192));
-		panel_2.setBounds(10, 470, 743, 266);
-		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 723, 244);
-		panel_2.add(scrollPane);
-		
-		table = new JTable();
-		table.setBorder(new CompoundBorder());
-		scrollPane.setViewportView(table);
-		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 103, 743, 358);
+		tabbedPane.setBounds(10, 103, 743, 633);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel panel = new JPanel();
-		tabbedPane.addTab("New tab", null, panel, null);
+		tabbedPane.addTab("Affect Asignements", null, panel, null);
 		panel.setBackground(new Color(220, 220, 220));
 		panel.setLayout(null);
 		
@@ -270,6 +269,116 @@ public class AdminDashboard {
 										GardnerName.setBounds(111, 44, 250, 20);
 										panel.add(GardnerName);
 										GardnerName.setColumns(10);
+										
+										JPanel panel_2 = new JPanel();
+										panel_2.setBounds(10, 335, 718, 259);
+										panel.add(panel_2);
+										panel_2.setBackground(new Color(192, 192, 192));
+										panel_2.setLayout(null);
+										
+										JScrollPane scrollPane = new JScrollPane();
+										scrollPane.setBounds(10, 11, 698, 237);
+										panel_2.add(scrollPane);
+										
+										table = new JTable();
+										table.setBorder(new CompoundBorder());
+										scrollPane.setViewportView(table);
+										
+										JPanel panel_3 =  new JPanel();
+										tabbedPane.addTab("New Gardners and Plants", null, panel_3, null);
+										panel_3.setLayout(null);
+										
+										JPanel panel_4 = new JPanel();
+										panel_4.setBorder(new TitledBorder(null, "New Gardner", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+										panel_4.setBounds(10, 29, 718, 200);
+										panel_3.add(panel_4);
+										panel_4.setLayout(null);
+										
+										JLabel lblNewLabel_7 = new JLabel("Username : ");
+										lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 13));
+										lblNewLabel_7.setBounds(25, 33, 84, 24);
+										panel_4.add(lblNewLabel_7);
+										
+										NewUsername = new JTextField();
+										NewUsername.setBounds(168, 36, 160, 20);
+										panel_4.add(NewUsername);
+										NewUsername.setColumns(10);
+										
+										JLabel lblNewLabel_7_1 = new JLabel("Password : ");
+										lblNewLabel_7_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+										lblNewLabel_7_1.setBounds(25, 80, 84, 24);
+										panel_4.add(lblNewLabel_7_1);
+										
+										NewPassword = new JTextField();
+										NewPassword.setBounds(168, 83, 160, 20);
+										panel_4.add(NewPassword);
+										NewPassword.setColumns(10);
+										
+										JPanel panel_5 = new JPanel();
+										panel_5.setBounds(409, 11, 299, 111);
+										panel_4.add(panel_5);
+										panel_5.setLayout(null);
+										
+										JScrollPane scrollPane_1 = new JScrollPane();
+										scrollPane_1.setBounds(10, 11, 279, 89);
+										panel_5.add(scrollPane_1);
+										
+										table_1 = new JTable();
+										table_1.setModel(new DefaultTableModel(
+											new Object[][] {
+												{null, null},
+											},
+											new String[] {
+												"Gardners username", "Garners ID"
+											}
+										));
+										scrollPane_1.setViewportView(table_1);
+										
+										JPanel panel_4_1 = new JPanel();
+										panel_4_1.setLayout(null);
+										panel_4_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "New Plant", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+										panel_4_1.setBounds(10, 240, 718, 354);
+										panel_3.add(panel_4_1);
+										
+										JLabel lblNewLabel_7_2 = new JLabel("Plant name :");
+										lblNewLabel_7_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+										lblNewLabel_7_2.setBounds(25, 33, 84, 24);
+										panel_4_1.add(lblNewLabel_7_2);
+										
+										textField = new JTextField();
+										textField.setColumns(10);
+										textField.setBounds(170, 36, 160, 20);
+										panel_4_1.add(textField);
+										
+										JPanel panel_6 = new JPanel();
+										panel_6.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Registration Date :", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+										panel_6.setBounds(25, 79, 278, 180);
+										panel_4_1.add(panel_6);
+										panel_6.setLayout(null);
+										
+										JCalendar calendar = new JCalendar();
+										calendar.setBounds(38, 23, 189, 146);
+										panel_6.add(calendar);
+										
+										JPanel panel_7 = new JPanel();
+										panel_7.setBounds(400, 54, 308, 210);
+										panel_4_1.add(panel_7);
+										panel_7.setLayout(null);
+										
+										JScrollPane scrollPane_2 = new JScrollPane();
+										scrollPane_2.setBounds(10, 11, 288, 188);
+										panel_7.add(scrollPane_2);
+										
+										table_2 = new JTable();
+										table_2.setModel(new DefaultTableModel(
+											new Object[][] {
+												{null, null},
+											},
+											new String[] {
+												"Plant name", "Planting date"
+											}
+										));
+										scrollPane_2.setViewportView(table_2);
 		
 		
 	}
