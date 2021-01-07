@@ -46,6 +46,7 @@ import com.toedter.components.JLocaleChooser;
 import com.toedter.calendar.JDayChooser;
 import com.toedter.components.JSpinField;
 import com.toedter.calendar.JCalendar;
+import java.awt.FlowLayout;
 
 public class AdminDashboard {
 
@@ -62,8 +63,8 @@ public class AdminDashboard {
 	private JTextField NewUsername;
 	private JTextField NewPassword;
 	private JTextField textField;
-	private JTable table_1;
-	private JTable table_2;
+	private JTable tableGardners;
+	private JTable tablePlant;
 	
 	
 	
@@ -323,16 +324,77 @@ public class AdminDashboard {
 										scrollPane_1.setBounds(10, 11, 279, 89);
 										panel_5.add(scrollPane_1);
 										
-										table_1 = new JTable();
-										table_1.setModel(new DefaultTableModel(
+										tableGardners = new JTable();
+										tableGardners.setModel(new DefaultTableModel(
 											new Object[][] {
+												{null, null},
+												{null, null},
+												{null, null},
 												{null, null},
 											},
 											new String[] {
 												"Gardners username", "Garners ID"
 											}
 										));
-										scrollPane_1.setViewportView(table_1);
+										scrollPane_1.setViewportView(tableGardners);
+										
+										JPanel panel_8 = new JPanel();
+										panel_8.setBounds(25, 136, 671, 53);
+										panel_4.add(panel_8);
+										panel_8.setLayout(null);
+										
+										JButton InsertUser = new JButton("Insert ");
+										InsertUser.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												
+												try {
+													String mySqlQuerry = "INSERT INTO `login`(`Username`, `Password`,`Usertype`, `Nickname`, `Email`) VALUES (?,?,'User','Test','Test@gmail.com');";
+													myConn = MySqlConnection.getConnection();
+													
+													preparedStatement = myConn.prepareStatement(mySqlQuerry);
+													preparedStatement.setString(1,NewUsername.getText());
+													preparedStatement.setString(2, NewPassword.getText());
+													
+													preparedStatement.executeUpdate();
+
+													JOptionPane.showMessageDialog(null, "Inserted Succesfully!");
+													
+												}catch(Exception exception) {
+													JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+													
+												}
+												
+												
+												
+											}
+										});
+										InsertUser.setBounds(22, 11, 146, 31);
+										panel_8.add(InsertUser);
+										
+										JButton btnShow_1 = new JButton("Show");
+										btnShow_1.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												
+												try {
+													String mySqlQuerry = "SELECT `Username`,`UID` FROM `login` WHERE `Usertype` ='User';";
+													
+													myConn = MySqlConnection.getConnection();
+													preparedStatement = myConn.prepareStatement(mySqlQuerry);					
+													resultSet = preparedStatement.executeQuery();
+
+													tableGardners.setModel(DbUtils.resultSetToTableModel(resultSet));
+													
+												}catch(Exception exception) {
+													JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+													
+												}
+												
+											}
+										});
+										btnShow_1.setBounds(515, 11, 146, 31);
+										panel_8.add(btnShow_1);
 										
 										JPanel panel_4_1 = new JPanel();
 										panel_4_1.setLayout(null);
@@ -369,8 +431,8 @@ public class AdminDashboard {
 										scrollPane_2.setBounds(10, 11, 288, 188);
 										panel_7.add(scrollPane_2);
 										
-										table_2 = new JTable();
-										table_2.setModel(new DefaultTableModel(
+										tablePlant = new JTable();
+										tablePlant.setModel(new DefaultTableModel(
 											new Object[][] {
 												{null, null},
 											},
@@ -378,7 +440,7 @@ public class AdminDashboard {
 												"Plant name", "Planting date"
 											}
 										));
-										scrollPane_2.setViewportView(table_2);
+										scrollPane_2.setViewportView(tablePlant);
 		
 		
 	}
