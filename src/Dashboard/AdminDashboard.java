@@ -54,8 +54,7 @@ public class AdminDashboard {
 	public JFrame frame;
 	private  final JLabel usernameAdm = new JLabel(".....");;
 	private  final JLabel adm = new JLabel("....."); 
-	private JTextField PlantName;
-	private JTextField GardnerName;;
+	private JTextField PlantName;;
 
 	Connection myConn = null;
 	PreparedStatement preparedStatement = null;
@@ -218,13 +217,18 @@ public class AdminDashboard {
 						btnDelete.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								try {
-									String mySqlQuerry = "DELETE FROM `assignments` WHERE Gardner =?  ;";
+									String mySqlQuerry = "DELETE FROM `assignments` WHERE Gardner =? AND `Zone` =? AND `Plant` =? AND `Watering` =? AND `Fertlizing`= ? ;";
 									
 									myConn = MySqlConnection.getConnection();
 									preparedStatement = myConn.prepareStatement(mySqlQuerry);
 									
 									
+									
 									preparedStatement.setString(1, GardnerNameComboBox.getSelectedItem().toString());
+									preparedStatement.setString(2, ZoneNameComboBox.getSelectedItem().toString());
+									preparedStatement.setString(3, PlantName.getText());
+									preparedStatement.setString(4, NbrWatering.getValue().toString());
+									preparedStatement.setString(5, NbrFertlizing.getValue().toString());
 									
 									
 									preparedStatement.executeUpdate();
@@ -271,11 +275,6 @@ public class AdminDashboard {
 										btnShow.setBounds(190, 56, 104, 38);
 										panel_1.add(btnShow);
 										
-										GardnerName = new JTextField();
-										GardnerName.setBounds(111, 44, 250, 20);
-										panel.add(GardnerName);
-										GardnerName.setColumns(10);
-										
 										JPanel panel_2 = new JPanel();
 										panel_2.setBounds(10, 335, 718, 259);
 										panel.add(panel_2);
@@ -291,7 +290,7 @@ public class AdminDashboard {
 										scrollPane.setViewportView(table);
 										
 										GardnerNameComboBox = new JComboBox();
-										GardnerNameComboBox.setBounds(371, 28, 132, 22);
+										GardnerNameComboBox.setBounds(111, 43, 250, 22);
 										panel.add(GardnerNameComboBox);
 										
 										JPanel panel_3 =  new JPanel();
