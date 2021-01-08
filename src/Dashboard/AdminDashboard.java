@@ -1,10 +1,11 @@
 package Dashboard;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.text.SimpleDateFormat;
 import java.awt.EventQueue;
 import java.awt.Image;
 
@@ -48,6 +49,9 @@ import com.toedter.calendar.JDayChooser;
 import com.toedter.components.JSpinField;
 import com.toedter.calendar.JCalendar;
 import java.awt.FlowLayout;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
 
 public class AdminDashboard {
 
@@ -62,10 +66,12 @@ public class AdminDashboard {
 	private JTable table;
 	private JTextField NewUsername;
 	private JTextField NewPassword;
-	private JTextField textField;
+	private JTextField PlantNameInput;
 	private JTable tableGardners;
 	private JTable tablePlant;
 	private JComboBox<String> GardnerNameComboBox;
+	private JFormattedTextField dateField;
+	private JComboBox<String> plantComboBox;
 	
 	
 	
@@ -94,7 +100,7 @@ public class AdminDashboard {
 		usernameAdm.setText(LoginSession.Nickname);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 103, 743, 633);
+		tabbedPane.setBounds(10, 103, 743, 644);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel panel = new JPanel();
@@ -159,7 +165,7 @@ public class AdminDashboard {
 					preparedStatement = myConn.prepareStatement(mySqlQuerry);
 					preparedStatement.setString(1, GardnerNameComboBox.getSelectedItem().toString());
 					preparedStatement.setString(2, ZoneNameComboBox.getSelectedItem().toString());
-					preparedStatement.setString(3, PlantName.getText());
+					preparedStatement.setString(3, plantComboBox.getSelectedItem().toString());
 					preparedStatement.setString(4, NbrWatering.getValue().toString());
 					preparedStatement.setString(5, NbrFertlizing.getValue().toString());
 					
@@ -193,7 +199,7 @@ public class AdminDashboard {
 							preparedStatement = myConn.prepareStatement(mySqlQuerry);
 							
 							preparedStatement.setString(1, ZoneNameComboBox.getSelectedItem().toString());
-							preparedStatement.setString(2, PlantName.getText());
+							preparedStatement.setString(2, plantComboBox.getSelectedItem().toString());
 							preparedStatement.setString(3, NbrWatering.getValue().toString());
 							preparedStatement.setString(4, NbrFertlizing.getValue().toString());
 							preparedStatement.setString(5, GardnerNameComboBox.getSelectedItem().toString());
@@ -226,7 +232,7 @@ public class AdminDashboard {
 									
 									preparedStatement.setString(1, GardnerNameComboBox.getSelectedItem().toString());
 									preparedStatement.setString(2, ZoneNameComboBox.getSelectedItem().toString());
-									preparedStatement.setString(3, PlantName.getText());
+									preparedStatement.setString(3, plantComboBox.getSelectedItem().toString());
 									preparedStatement.setString(4, NbrWatering.getValue().toString());
 									preparedStatement.setString(5, NbrFertlizing.getValue().toString());
 									
@@ -259,8 +265,10 @@ public class AdminDashboard {
 											resultSet = preparedStatement.executeQuery();
 
 											table.setModel(DbUtils.resultSetToTableModel(resultSet));
-											Operations.comboBoxData(GardnerNameComboBox);
+											Operations.UsernameComboBoxData(GardnerNameComboBox);
+											Operations.PlantComboBoxData(plantComboBox);
 
+											
 											
 										}catch(Exception exception) {
 											JOptionPane.showMessageDialog(null,"Error: "+ exception);
@@ -292,6 +300,10 @@ public class AdminDashboard {
 										GardnerNameComboBox = new JComboBox();
 										GardnerNameComboBox.setBounds(111, 43, 250, 22);
 										panel.add(GardnerNameComboBox);
+										
+										plantComboBox = new JComboBox();
+										plantComboBox.setBounds(247, 153, 83, 22);
+										panel.add(plantComboBox);
 										
 										JPanel panel_3 =  new JPanel();
 										tabbedPane.addTab("New Gardners and Plants", null, panel_3, null);
@@ -407,7 +419,7 @@ public class AdminDashboard {
 										JPanel panel_4_1 = new JPanel();
 										panel_4_1.setLayout(null);
 										panel_4_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "New Plant", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-										panel_4_1.setBounds(10, 240, 718, 354);
+										panel_4_1.setBounds(10, 240, 718, 365);
 										panel_3.add(panel_4_1);
 										
 										JLabel lblNewLabel_7_2 = new JLabel("Plant name :");
@@ -415,40 +427,120 @@ public class AdminDashboard {
 										lblNewLabel_7_2.setBounds(25, 33, 84, 24);
 										panel_4_1.add(lblNewLabel_7_2);
 										
-										textField = new JTextField();
-										textField.setColumns(10);
-										textField.setBounds(170, 36, 160, 20);
-										panel_4_1.add(textField);
+										PlantNameInput = new JTextField();
+										PlantNameInput.setColumns(10);
+										PlantNameInput.setBounds(153, 36, 160, 20);
+										panel_4_1.add(PlantNameInput);
 										
 										JPanel panel_6 = new JPanel();
 										panel_6.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Registration Date :", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-										panel_6.setBounds(25, 79, 278, 180);
+										panel_6.setBounds(25, 103, 278, 106);
 										panel_4_1.add(panel_6);
 										panel_6.setLayout(null);
 										
-										JCalendar calendar = new JCalendar();
-										calendar.setBounds(38, 23, 189, 146);
-										panel_6.add(calendar);
+										dateField = new JFormattedTextField(new SimpleDateFormat("dd/MM/yyyy"));
+										dateField.setValue(new java.util.Date());
+										dateField.setBounds(40, 37, 199, 35);
+										panel_6.add(dateField);
+										
 										
 										JPanel panel_7 = new JPanel();
-										panel_7.setBounds(400, 54, 308, 210);
+										panel_7.setBounds(400, 54, 308, 229);
 										panel_4_1.add(panel_7);
 										panel_7.setLayout(null);
 										
 										JScrollPane scrollPane_2 = new JScrollPane();
-										scrollPane_2.setBounds(10, 11, 288, 188);
+										scrollPane_2.setBounds(10, 11, 288, 207);
 										panel_7.add(scrollPane_2);
 										
 										tablePlant = new JTable();
 										tablePlant.setModel(new DefaultTableModel(
 											new Object[][] {
-												{null, null},
+												{null, null, null},
 											},
 											new String[] {
-												"Plant name", "Planting date"
+												"Plant age", "Plant name", "Planting date"
 											}
 										));
 										scrollPane_2.setViewportView(tablePlant);
+										
+										JLabel lblNewLabel_7_2_1 = new JLabel("Plant age :");
+										lblNewLabel_7_2_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+										lblNewLabel_7_2_1.setBounds(25, 68, 84, 24);
+										panel_4_1.add(lblNewLabel_7_2_1);
+										
+										JPanel panel_8_1 = new JPanel();
+										panel_8_1.setLayout(null);
+										panel_8_1.setBounds(25, 294, 671, 53);
+										panel_4_1.add(panel_8_1);
+										
+										JSpinner PlantAgeInput = new JSpinner();
+										PlantAgeInput.setBounds(153, 72, 48, 20);
+										panel_4_1.add(PlantAgeInput);
+										
+										JButton InsertPlant = new JButton("Insert ");
+										InsertPlant.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												//insert a Plant
+												try {
+												String mySqlQuerry = "INSERT INTO `plants`(`Plant Name`, `Planting Data`, `Plant Age`) VALUES (?,?,?);";
+												myConn = MySqlConnection.getConnection();
+												
+												preparedStatement = myConn.prepareStatement(mySqlQuerry);
+												Date date;
+												
+												
+														
+													java.util.Date theDate = (java.util.Date)dateField.getValue();
+													
+													
+												
+												preparedStatement.setString(1,PlantNameInput.getText());
+												preparedStatement.setString(3, PlantAgeInput.getValue().toString());
+												preparedStatement.setDate(2,new java.sql.Date(theDate.getTime()));
+
+												
+												
+												preparedStatement.executeUpdate();
+												JOptionPane.showMessageDialog(null,"Inserted Succesfully!");
+												
+									
+												
+											}catch(Exception exception) {
+												JOptionPane.showMessageDialog(null,"Error: "+ exception);
+											}
+												
+												
+											}
+										});
+										InsertPlant.setBounds(22, 11, 146, 31);
+										panel_8_1.add(InsertPlant);
+										
+										JButton BtnShowPlants = new JButton("Show");
+										BtnShowPlants.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent arg0) {
+												
+												try {
+													String mySqlQuerry = "SELECT `Plant Name`, `Planting Data`, `Plant Age` FROM `plants` ";
+													
+													myConn = MySqlConnection.getConnection();
+													preparedStatement = myConn.prepareStatement(mySqlQuerry);					
+													resultSet = preparedStatement.executeQuery();
+
+													tablePlant.setModel(DbUtils.resultSetToTableModel(resultSet));
+													
+												}catch(Exception exception) {
+													JOptionPane.showMessageDialog(null,"Error: "+ exception);
+
+													
+												}
+												
+											}
+										});
+										BtnShowPlants.setBounds(515, 11, 146, 31);
+										panel_8_1.add(BtnShowPlants);
+										
+										
 		
 		
 	}

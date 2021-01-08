@@ -36,7 +36,7 @@ public class Operations {
 		return false;
 	}
 	
-	public static void comboBoxData( JComboBox<String> AsignmentsComboBox ) {
+	public static void UsernameComboBoxData( JComboBox<String> AsignmentsComboBox ) {
 		try {
 			
 			myConn = MySqlConnection.getConnection();
@@ -48,6 +48,25 @@ public class Operations {
 			
 			while(resultSet.next()) {
 				AsignmentsComboBox.addItem(resultSet.getString("Username"));
+			}
+			
+		}catch(Exception exception) {
+			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
+		}
+	}
+	
+	public static void PlantComboBoxData( JComboBox<String> AsignmentsComboBox ) {
+		try {
+			
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT `Plant Name` FROM `plants`";
+					
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
+			
+			while(resultSet.next()) {
+				AsignmentsComboBox.addItem(resultSet.getString("Plant Name"));
 			}
 			
 		}catch(Exception exception) {
