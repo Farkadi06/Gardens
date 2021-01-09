@@ -167,9 +167,9 @@ public class AdminDashboard {
 					Operations.AssignmentGardner(GardnerNameComboBox.getSelectedItem().toString());
 					
 					if(LoginSession.GardnersPerZone >=3) {
-						JOptionPane.showMessageDialog(null, "Can't be inserted!\n The zone " +ZoneNameComboBox.getSelectedItem().toString()+" is Saturated.");
+						JOptionPane.showMessageDialog(null, "Can't be inserted!\n The zone '" +ZoneNameComboBox.getSelectedItem().toString()+"' is Saturated.");
 					}else if (LoginSession.AssignmentGardner >=3) {
-						JOptionPane.showMessageDialog(null, "Can't be inserted!\n The Gardner " +GardnerNameComboBox.getSelectedItem().toString()+" has reached the maximum tasks authorised per day!.");
+						JOptionPane.showMessageDialog(null, "Can't be inserted!\n The Gardner '" +GardnerNameComboBox.getSelectedItem().toString()+"' has reached the maximum tasks authorised per day!.");
 					}
 					else {
 						preparedStatement.executeUpdate();
@@ -550,6 +550,20 @@ public class AdminDashboard {
 										});
 										BtnShowPlants.setBounds(515, 11, 146, 31);
 										panel_8_1.add(BtnShowPlants);
+										
+										JLabel lblNewLabel_9 = new JLabel("( Months )");
+										lblNewLabel_9.setFont(new Font("Tahoma", Font.PLAIN, 9));
+										lblNewLabel_9.setBounds(211, 74, 74, 14);
+										panel_4_1.add(lblNewLabel_9);
+										
+										JPanel panel_9 = new JPanel();
+										tabbedPane.addTab("Rules", null, panel_9, null);
+										panel_9.setLayout(null);
+										
+										JLabel lblNewLabel_8 = new JLabel("- Every gardner must have at most 3 tasks per day.");
+										lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 14));
+										lblNewLabel_8.setBounds(40, 54, 640, 47);
+										panel_9.add(lblNewLabel_8);
 										
 										
 		
