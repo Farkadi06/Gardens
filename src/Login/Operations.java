@@ -45,10 +45,12 @@ public class Operations {
 			preparedStatement = myConn.prepareStatement(mySqlQuery);
 			resultSet = preparedStatement.executeQuery();
 			
+			AsignmentsComboBox.removeAllItems();
 			
 			while(resultSet.next()) {
 				AsignmentsComboBox.addItem(resultSet.getString("Username"));
 			}
+			
 			
 		}catch(Exception exception) {
 			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
@@ -64,6 +66,8 @@ public class Operations {
 			preparedStatement = myConn.prepareStatement(mySqlQuery);
 			resultSet = preparedStatement.executeQuery();
 			
+			AsignmentsComboBox.removeAllItems();
+
 			
 			while(resultSet.next()) {
 				AsignmentsComboBox.addItem(resultSet.getString("Plant Name"));
@@ -71,6 +75,48 @@ public class Operations {
 			
 		}catch(Exception exception) {
 			JOptionPane.showMessageDialog(null, "Database error: "+exception.getMessage());
+		}
+	}
+	
+	public static void UsersprZone(String Zone) {
+		
+		try {
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT COUNT(`Gardner`) FROM `assignments` WHERE `Zone` = '"+Zone+"';";
+					
+			
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
+			
+			while(resultSet.next()) {
+				LoginSession.GardnersPerZone = resultSet.getInt("COUNT(`Gardner`)");
+			}
+			
+			
+		}catch(Exception exp) {
+			JOptionPane.showMessageDialog(null,"Userprzone"+ exp);
+		}
+	}
+	
+public static void AssignmentGardner(String Gardner) {
+		
+		try {
+			myConn = MySqlConnection.getConnection();
+			String mySqlQuery = "SELECT COUNT(`Gardner`) FROM `assignments` WHERE `Gardner` = '"+Gardner+"';";
+					
+			
+			preparedStatement = myConn.prepareStatement(mySqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
+			
+			while(resultSet.next()) {
+				LoginSession.AssignmentGardner = resultSet.getInt("COUNT(`Gardner`)");
+			}
+			
+			
+		}catch(Exception exp) {
+			JOptionPane.showMessageDialog(null,"Gardner  : "+ exp);
 		}
 	}
 }

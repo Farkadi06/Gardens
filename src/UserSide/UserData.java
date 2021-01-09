@@ -37,15 +37,16 @@ public class UserData {
 	}
 	
 	
-	public static void comboBoxData( JComboBox<Integer> AsignmentsComboBox ) {
+	public static void comboBoxData( JComboBox<Integer> AsignmentsComboBox,String username ) {
 		try {
 			
 			myConn = MySqlConnection.getConnection();
-			String mySqlQuery = "SELECT  `AsignmentID` ,`Zone`, `Plant`, `Watering`, `Fertlizing` FROM `assignments` WHERE `Gardner` = 'Mohammed';";
+			String mySqlQuery = "SELECT  `AsignmentID` ,`Zone`, `Plant`, `Watering`, `Fertlizing` FROM `assignments` WHERE `Gardner` = '"+username+"';";
 					
 			preparedStatement = myConn.prepareStatement(mySqlQuery);
 			resultSet = preparedStatement.executeQuery();
-			
+
+			AsignmentsComboBox.removeAllItems();
 			
 			while(resultSet.next()) {
 				AsignmentsComboBox.addItem(resultSet.getInt("AsignmentID"));

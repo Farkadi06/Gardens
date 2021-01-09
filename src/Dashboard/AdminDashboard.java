@@ -57,8 +57,7 @@ public class AdminDashboard {
 
 	public JFrame frame;
 	private  final JLabel usernameAdm = new JLabel(".....");;
-	private  final JLabel adm = new JLabel("....."); 
-	private JTextField PlantName;;
+	private  final JLabel adm = new JLabel("....."); ;
 
 	Connection myConn = null;
 	PreparedStatement preparedStatement = null;
@@ -128,11 +127,6 @@ public class AdminDashboard {
 		lblNewLabel_6.setBounds(460, 110, 93, 14);
 		panel.add(lblNewLabel_6);
 		
-		PlantName = new JTextField();
-		PlantName.setBounds(111, 125, 250, 20);
-		panel.add(PlantName);
-		PlantName.setColumns(10);
-		
 		JComboBox ZoneNameComboBox = new JComboBox();
 		ZoneNameComboBox.setModel(new DefaultComboBoxModel(new String[] {"Zone A.1", "Zone A.2", "Zone A.3", "Zone B.1", "Zone B.2", "Zone B.3", "Zone C.1 ", "Zone C.2"}));
 		ZoneNameComboBox.setBounds(111, 81, 250, 22);
@@ -169,9 +163,22 @@ public class AdminDashboard {
 					preparedStatement.setString(4, NbrWatering.getValue().toString());
 					preparedStatement.setString(5, NbrFertlizing.getValue().toString());
 					
-					preparedStatement.executeUpdate();
+					Operations.UsersprZone(ZoneNameComboBox.getSelectedItem().toString());
+					Operations.AssignmentGardner(GardnerNameComboBox.getSelectedItem().toString());
+					
+					if(LoginSession.GardnersPerZone >=3) {
+						JOptionPane.showMessageDialog(null, "Can't be inserted!\n The zone " +ZoneNameComboBox.getSelectedItem().toString()+" is Saturated.");
+					}else if (LoginSession.AssignmentGardner >=3) {
+						JOptionPane.showMessageDialog(null, "Can't be inserted!\n The Gardner " +GardnerNameComboBox.getSelectedItem().toString()+" has reached the maximum tasks authorised per day!.");
+					}
+					else {
+						preparedStatement.executeUpdate();
+						JOptionPane.showMessageDialog(null, "Inserted Succesfully!");
+					}
+					
+					
 
-					JOptionPane.showMessageDialog(null, "Inserted Succesfully!");
+					
 					
 				}catch(Exception exception) {
 					JOptionPane.showMessageDialog(null,"Error: "+ exception);
@@ -260,14 +267,18 @@ public class AdminDashboard {
 										try {
 											String mySqlQuerry = "SELECT * FROM `assignments`;";
 											
+											
 											myConn = MySqlConnection.getConnection();
 											preparedStatement = myConn.prepareStatement(mySqlQuerry);					
 											resultSet = preparedStatement.executeQuery();
 
 											table.setModel(DbUtils.resultSetToTableModel(resultSet));
+											
 											Operations.UsernameComboBoxData(GardnerNameComboBox);
 											Operations.PlantComboBoxData(plantComboBox);
-
+											
+											
+											
 											
 											
 										}catch(Exception exception) {
@@ -302,7 +313,7 @@ public class AdminDashboard {
 										panel.add(GardnerNameComboBox);
 										
 										plantComboBox = new JComboBox();
-										plantComboBox.setBounds(247, 153, 83, 22);
+										plantComboBox.setBounds(111, 124, 250, 22);
 										panel.add(plantComboBox);
 										
 										JPanel panel_3 =  new JPanel();

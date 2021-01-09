@@ -152,7 +152,7 @@ public class UserDashboard {
 				try
 				{
 					UserData.isDataAvailable(LoginSession.Nickname,table);
-					UserData.comboBoxData(mAsignmentsComboBox);
+					UserData.comboBoxData(mAsignmentsComboBox,LoginSession.Nickname);
 					
 					
 				}catch(Exception exp){
