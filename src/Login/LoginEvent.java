@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -51,6 +53,16 @@ public class LoginEvent {
 	 */
 	public LoginEvent() {
 		initialize();
+		
+		setIconImage();
+	}
+
+	private void setIconImage() {
+		// TODO Auto-generated method stub
+		
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/agriculture.png")));
+		frame.setTitle("Sign in");
+		
 	}
 
 	/**

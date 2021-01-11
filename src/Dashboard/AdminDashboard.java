@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -94,6 +95,9 @@ public class AdminDashboard {
 	 */
 	public AdminDashboard() {
 		initialize();
+		
+		setIconImage();
+		
 		
 		adm.setText(LoginSession.Usertype);
 		usernameAdm.setText(LoginSession.Nickname);
@@ -200,16 +204,16 @@ public class AdminDashboard {
 					public void actionPerformed(ActionEvent arg0) {
 						
 						try {
-							String mySqlQuerry = "UPDATE `assignments` SET `Zone`=? ,`Plant`=? ,`Watering`=? ,`Fertlizing`=? WHERE Gardner =? ;";
+							String mySqlQuerry = "UPDATE `assignments` SET `Watering`=? ,`Fertlizing`=? WHERE Gardner =? AND `Zone`=? AND`Plant`=?  ;";
 							
 							myConn = MySqlConnection.getConnection();
 							preparedStatement = myConn.prepareStatement(mySqlQuerry);
 							
-							preparedStatement.setString(1, ZoneNameComboBox.getSelectedItem().toString());
-							preparedStatement.setString(2, plantComboBox.getSelectedItem().toString());
-							preparedStatement.setString(3, NbrWatering.getValue().toString());
-							preparedStatement.setString(4, NbrFertlizing.getValue().toString());
-							preparedStatement.setString(5, GardnerNameComboBox.getSelectedItem().toString());
+							preparedStatement.setString(4, ZoneNameComboBox.getSelectedItem().toString());
+							preparedStatement.setString(5, plantComboBox.getSelectedItem().toString());
+							preparedStatement.setString(1, NbrWatering.getValue().toString());
+							preparedStatement.setString(2, NbrFertlizing.getValue().toString());
+							preparedStatement.setString(3, GardnerNameComboBox.getSelectedItem().toString());
 							
 							
 							preparedStatement.executeUpdate();
@@ -565,8 +569,26 @@ public class AdminDashboard {
 										lblNewLabel_8.setBounds(40, 54, 640, 47);
 										panel_9.add(lblNewLabel_8);
 										
+										JLabel lblNewLabel_8_1 = new JLabel("- Every zone container at most 3 Gardners. ");
+										lblNewLabel_8_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+										lblNewLabel_8_1.setBounds(40, 112, 640, 47);
+										panel_9.add(lblNewLabel_8_1);
+										
+										JLabel lblNewLabel_8_1_1 = new JLabel("- Every task is asigned just one time.");
+										lblNewLabel_8_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+										lblNewLabel_8_1_1.setBounds(40, 170, 640, 47);
+										panel_9.add(lblNewLabel_8_1_1);
+										
 										
 		
+		
+	}
+	
+	private void setIconImage() {
+		// TODO Auto-generated method stub
+		
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/agriculture.png")));
+		frame.setTitle("Admin dashboard");
 		
 	}
 

@@ -2,6 +2,7 @@ package Dashboard;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -134,6 +135,8 @@ public class UserDashboard {
 	public UserDashboard() {
 		initialize();
 		
+		setIconImage();
+		
 		UsernameUsr.setText(LoginSession.Nickname);
 		Usr.setText(LoginSession.Usertype);
 		
@@ -227,6 +230,14 @@ public class UserDashboard {
 		mPanelInstructions = new JPanel();
 		tabbedPane.addTab("Instruction", null, mPanelInstructions, null);
 		mPanelInstructions.setLayout(null);
+	}
+
+	private void setIconImage() {
+		// TODO Auto-generated method stub
+
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/agriculture.png")));
+		frame.setTitle("User Dashboard");
+		
 	}
 
 	/**
